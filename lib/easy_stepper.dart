@@ -208,7 +208,7 @@ class EasyStepper extends StatefulWidget {
     this.showLoadingAnimation = true,
     this.textDirection = TextDirection.ltr,
     this.lineStyle,
-    this.autoScroll
+    this.autoScroll = false
   })  : assert(maxReachedStep == null || reachedSteps == null,
             'only "maxReachedStep" or "reachedSteps" allowed'),
         super(key: key);
