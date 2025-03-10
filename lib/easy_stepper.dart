@@ -159,6 +159,8 @@ class EasyStepper extends StatefulWidget {
 
   final bool autoScroll;
 
+  final bool initialAutoScroll;
+
   const EasyStepper({
     Key? key,
     required this.activeStep,
@@ -208,7 +210,8 @@ class EasyStepper extends StatefulWidget {
     this.showLoadingAnimation = true,
     this.textDirection = TextDirection.ltr,
     this.lineStyle,
-    this.autoScroll = false
+    this.autoScroll = true,
+    this.initialAutoScroll = true
   })  : assert(maxReachedStep == null || reachedSteps == null,
             'only "maxReachedStep" or "reachedSteps" allowed'),
         super(key: key);
@@ -222,9 +225,11 @@ class _EasyStepperState extends State<EasyStepper> {
   late int _selectedIndex;
   late LineStyle lineStyle;
   late EdgeInsetsGeometry _padding;
+  late bool initialAutoScroll;
 
   @override
   void initState() {
+    initialAutoScroll = widget.initialAutoScroll;
     lineStyle = widget.lineStyle ?? const LineStyle();
     _selectedIndex = widget.activeStep;
     _scrollController = ScrollController();
@@ -267,7 +272,9 @@ class _EasyStepperState extends State<EasyStepper> {
 
   /// Controls the step scrolling.
   void _afterLayout(_) {
-    if(widget.autoScroll) {
+    if(widget.autoScroll || initialAutoScroll) {
+      initialAutoScroll = false;
+      
       for (int i = 0; i < widget.steps.length; i++) {
         _scrollController!.animateTo(
           i *
